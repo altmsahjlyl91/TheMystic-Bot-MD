@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+/*import fetch from 'node-fetch';
 
 var handler = async (m, { text, usedPrefix, command }) => {
     if (!text) throw `*يرجى وضع نص للرد عليه.*\n\n*❏ لمزيد من الأمثلة والأوامر يرجى استخدام*\n*${usedPrefix + command} أو ${usedPrefix + command} أو ${usedPrefix + command}*`;
@@ -20,3 +20,4 @@ handler.tags = ['أدوات'];
 handler.premium = false;
 
 export default handler;
+*/
