@@ -1,48 +1,21 @@
-import { googleImage } from '@bochilteam/scraper';
-import sharp from 'sharp';
-import fetch from 'node-fetch';
-
-var handler = async (m, { conn, text, usedPrefix, command }) => {
-    if (!text) throw `استخدم المثال ${usedPrefix}${command} Good Old Days`;
-
-    const res = await googleImage(text);
-    let images = res;
-    conn.reply("انتظر لحظة...")
-
-    for (let i = 0; i < Math.min(images.length, 4); i++) {
-        let randomIndex = Math.floor(Math.random() * images.length); // صورة عشوائية
-        let imageLink = images[randomIndex];
-      
-        // let imageLink = images[i];
-      
-        try {
-            let imgBuffer = await (await fetch(imageLink)).buffer();
-            let metadata = await sharp(imgBuffer).metadata();
-            let resolution = `${metadata.width} x ${metadata.height}`;
-          
-            let processedImageBuffer = await sharp(imgBuffer)
-                .resize(5120) // الأفضل بجودة HD فقط بواسطة lua ser ofc
-                .toBuffer();
-
-            let metadata_HD = await sharp(processedImageBuffer).metadata();
-            let resolution_HD = `${metadata_HD.width} x ${metadata_HD.height}`;
-
-            conn.sendFile(m.chat, processedImageBuffer, 'google.jpg', `*نتيجة البحث من Google Image*
-🔎 *استعلام:* ${text}
-📐 *الدقة الأصلية:* ${resolution}
-📏 *دقة HD:* ${resolution_HD}
-🌎 *المصدر:* Google`, m);
-
-            await new Promise(resolve => setTimeout(resolve, 2000)); // توقف لبضع ثواني 1000 -> 1 ثانية
-        } catch (error) {
-            console.error('خطأ في جلب الصورة:', error);
-            // تخطي واستمر إلى الصورة التالية
-        }
-    }
-}
-
-handler.help = ['gimage <استعلام>', 'image <استعلام>'];
-handler.tags = ['الإنترنت'];
-handler.command = /^(صور|image|googleimage|googleimg|gimg)$/i;
-
-export default handler;
+import { googleImage } from  @bochilteam/scraper 
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+if (!text) throw `استخدم المثال ${usedPrefix}${command} Good Old Days`;
+const prohibited = [ caca ,  polla ,  porno ,  porn ,  gore ,  cum ,  semen ,  puta ,  puto ,  culo ,  putita ,  putito , pussy ,  hentai ,  pene ,  coño ,  asesinato ,  zoofilia ,  mia khalifa ,  desnudo ,  desnuda ,  cuca ,  chocha ,  muertos ,  pornhub ,  xnxx ,  xvideos ,  teta ,  vagina ,  marsha may ,  misha cross ,  sexmex ,  furry ,  furro ,  furra ,  xxx ,  rule34 ,  panocha ,  pedofilia ,  necrofilia ,  pinga ,  horny ,  ass ,  nude ,  popo ,  nsfw ,  femdom ,  futanari ,  erofeet ,  sexo ,  sex ,  yuri ,  ero ,  ecchi ,  blowjob ,  anal ,  ahegao ,  pija ,  verga ,  trasero ,  violation ,  violacion ,  bdsm ,  cachonda ,  +18 ,  cp ,  mia marin ,  lana rhoades ,  cepesito ,  hot ,  buceta ,  xxx ,  Violet Myllers ,  Violet Myllers pussy ,  Violet Myllers desnuda ,  Violet Myllers sin ropa ,  Violet Myllers culo ,  Violet Myllers vagina ,  Pornografía ,  Pornografía infantil ,  niña desnuda ,  niñas desnudas ,  niña pussy ,  niña pack ,  niña culo ,  niña sin ropa ,  niña siendo abusada ,  niña siendo abusada sexualmente  ,  niña cogiendo ,  niña fototeta ,  niña vagina ,  hero Boku no pico ,  Mia Khalifa cogiendo ,  Mia Khalifa sin ropa ,  Mia Khalifa comiendo polla ,  Mia Khalifa desnuda ]
+if (prohibited.some(word => m.text.toLowerCase().includes(word))) return m.reply( ⚠️😾 )      
+try {
+const res = await googleImage(text)
+let image = res.getRandom()
+let link = image
+conn.sendButton(m.chat, `💞 ${mid.buscador}: ${text}`, wm, link, [[ 🔄 𝙎𝙞𝙜𝙪𝙞𝙚𝙣𝙩𝙚 | 𝙉𝙚𝙭𝙩 , `/imagen ${text}`]], null, null, m)
+//conn.sendFile(m.chat, link,  error.jpg , `💞 ${mid.buscador}: ${text}`, m)
+} catch (e) {
+console.log(`❗❗ ${lenguajeGB[ smsMensError2 ]()} ${usedPrefix + command} ❗❗`)
+console.log(e)
+handler.money = false
+}}
+handler.help = [ gimage <query> ,  imagen <query> ]
+handler.tags = [ internet ,  tools ]
+handler.command = /^(صور|image|imagen|jpg)$/i
+handler.money = 50
+export default handler
