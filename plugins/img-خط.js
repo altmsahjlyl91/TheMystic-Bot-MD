@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 
 let handler = async (m, { conn, args }) => {
   if (!args[0]) {
-    return conn.reply(m.chat, 'Please provide some text to generate the code image.', m)
+    return conn.reply(m.chat, 'مثال :\n.خط القدس عاصمة فلسطين.', m)
   }
 
   let codeText = args.join(' ')
