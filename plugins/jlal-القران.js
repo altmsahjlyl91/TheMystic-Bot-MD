@@ -1,43 +1,55 @@
 import fetch from 'node-fetch'
+import { translate } from '@vitalets/google-translate-api'
 
-const BASE_URL = 'http://api.alquran.cloud/v1'
+const BASE_URL = 'https://bible-api.com'
 
-let quranChapterHandler = async (m, { conn }) => {
+let bibleChapterHandler = async (m, { conn }) => {
   try {
+    // Extract the chapter number or name from the command text.
     let chapterInput = m.text.split(' ').slice(1).join('').trim()
 
     if (!chapterInput) {
-      throw new Error('الرجاء تحديد رقم السورة. مثال: .القرآن البقرة')
+      throw new Error(`Please specify the chapter number or name. Example: -bible john 3:16`)
     }
 
-    let chapterRes = await fetch(`${BASE_URL}/surah/${chapterInput}/ar.alafasy`)
+    // Encode the chapterInput to handle special characters
+    chapterInput = encodeURIComponent(chapterInput)
+
+    // Make an API request to fetch the chapter information.
+    let chapterRes = await fetch(`${BASE_URL}/${chapterInput}`)
 
     if (!chapterRes.ok) {
-      throw new Error('لا يمكن العثور على المعلومات المطلوبة.')
+      throw new Error(`Please specify the chapter number or name. Example: -bible john 3:16`)
     }
 
     let chapterData = await chapterRes.json()
 
-    let chapterName = chapterData.data.name
-    let versesCount = chapterData.data.numberOfAyahs
-    let verses = chapterData.data.ayahs.map(ayah => ayah.text)
+    let translatedChapterHindi = await translate(chapterData.text, { to: 'hi', autoCorrect: true })
 
-    let chapterContent = `
-📖 *القرآن الكريم*
-📜 *سورة ${chapterName}*
-🔢 عدد الآيات: ${versesCount}
-🔮 *محتوى السورة:*\n
-${verses.join('\n')}
-`
-    m.reply(chapterContent)
+    let translatedChapterEnglish = await translate(chapterData.text, {
+      to: 'en',
+      autoCorrect: true,
+    })
+
+    let bibleChapter = `
+📖 *The Holy Bible*\n
+📜 *Chapter ${chapterData.reference}*\n
+Type: ${chapterData.translation_name}\n
+Number of verses: ${chapterData.verses.length}\n
+🔮 *Chapter Content (English):*\n
+${translatedChapterEnglish.text}\n
+🔮 *Chapter Content (Hindi):*\n
+${translatedChapterHindi.text}`
+
+    m.reply(bibleChapter)
   } catch (error) {
     console.error(error)
-    m.reply(`خطأ: ${error.message}`)
+    m.reply(`Error: ${error.message}`)
   }
 }
 
-quranChapterHandler.help = ['القرآن [رقم_السورة]']
-quranChapterHandler.tags = ['دين']
-quranChapterHandler.command = ['القران']
+bibleChapterHandler.help = ['bible [chapter_number|chapter_name]']
+bibleChapterHandler.tags = ['religion']
+bibleChapterHandler.command = ['bible', 'chapter']
 
-export default quranChapterHandler
+export default bibleChapterHandler
